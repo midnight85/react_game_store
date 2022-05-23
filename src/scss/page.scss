@@ -1,5 +1,4 @@
 .overlay {
-    // display: none;
     position: fixed;
     z-index: 5;
     top: 0;
@@ -55,6 +54,16 @@
         min-height: 55px;
         background: #9dd558;
         border-radius: 10px;
+    }
+    &__empty{
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        span{
+            text-align: center;
+            font-size: 22px;
+        }
     }
 }
 .cartItem {
@@ -193,8 +202,11 @@
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 30px;
+    .notFoundGame{
+        font-size: 24px;
+    }
     .card {
         // padding: 20px;
         border-radius: 10px;
@@ -291,18 +303,25 @@
             background: #ffffff;
             border: 1px solid $darkBlue;
             border-radius: 8px;
-            path {
-                fill: $darkBlue;
+            svg {
+                width: 16px;
+                height: 16px;
+                path {
+                    fill: $darkBlue;
+                }
             }
             @media (any-hover: hover) {
                 &:hover {
                     background: rgba(255, 255, 255, 0.8);
                     border: 1px solid $blue;
-                    path {
-                        fill: $blue;
+                    svg {
+                        path {
+                            fill: $blue;
+                        }
                     }
                 }
             }
         }
     }
 }
+
