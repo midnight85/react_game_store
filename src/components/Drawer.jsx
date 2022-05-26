@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react'
-import CartItem from '../CartItem/CartItem'
-import {AppContext} from "../../App";
+import CartItem from './CartItem'
+import {AppContext} from "../App";
 
-export default function Drawer({ onClickClose, onGameRemove }) {
+export default function Drawer({ opened, onClickClose, onGameRemove }) {
     // const [cartItem, setcartItem] = useState([
 
     //     {
@@ -30,8 +30,8 @@ export default function Drawer({ onClickClose, onGameRemove }) {
     const {cartGames} = useContext(AppContext)
     const totalPrice=cartGames.reduce((sum,game)=>game.price + sum,0)
     return (
-        <div className="overlay">
-            <div className="drawer">
+        <div className={`overlay ${opened?'overlay_open':''}`}>
+            <div className={`drawer ${opened?'drawer_open':''}`}>
                 <div className="drawer__header">
                     <div className="drawer__title">
                         Корзина

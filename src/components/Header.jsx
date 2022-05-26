@@ -1,5 +1,6 @@
 import React,{useContext, useEffect, useState} from 'react'
-import {AppContext} from "../../App";
+import {AppContext} from "../App";
+import {Link} from "react-router-dom";
 
 export default function Header({onClickCart}) {
     const {cartGames} = useContext(AppContext)
@@ -9,10 +10,10 @@ export default function Header({onClickCart}) {
         <header className="header">
             <div className="header__container">
                 <div className="header__body">
-                    <a href="#" className="header__logo">
+                    <Link to="/" className="header__logo">
                         <img width="50" height="50" className="logo" src="/img/logo.png" alt="logo" />
                         <span><span className="blue">R</span>eact <span className="blue">G</span>ame <span className="blue">S</span>tore</span>
-                    </a>
+                    </Link>
                     <div className="header__actions">
                         <button className="header__actions-item cart" onClick={onClickCart}>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,11 +23,11 @@ export default function Header({onClickCart}) {
                             </svg>
                             <span className="totalPrice">{totalPrice} ₴</span>
                         </button>
-                        <button className="header__actions-item wishlist">
+                        <Link to={'/wishlist'} className="header__actions-item wishlist">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11.9994 19.9072C7.4003 17.2878 4.83525 14.6843 3.59488 12.4254C2.32537 10.1134 2.43614 8.16615 3.14059 6.7841C4.58857 3.94337 8.70616 3.03499 11.2149 6.20797L11.9993 7.20002L12.7837 6.20802C15.2929 3.03491 19.4108 3.94344 20.8587 6.7841C21.5632 8.16613 21.6739 10.1134 20.4043 12.4254C19.1638 14.6843 16.5986 17.2878 11.9994 19.9072ZM11.9994 4.10589C8.47019 0.752278 3.26381 2.13832 1.35872 5.87584C0.313178 7.92706 0.298896 10.5782 1.84178 13.388C3.37099 16.173 6.41989 19.1125 11.5156 21.929L11.9993 22.1964L12.4831 21.9291C17.579 19.1126 20.6281 16.173 22.1574 13.3881C23.7004 10.5782 23.6861 7.92708 22.6406 5.87584C20.7355 2.13825 15.5289 0.752328 11.9994 4.10589Z" fill="#1E212C" />
                             </svg>
-                        </button>
+                        </Link>
                         <button className="header__actions-item profile">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12.0001 3.25C10.0671 3.25 8.50009 4.817 8.50009 6.75C8.50009 8.683 10.0671 10.25 12.0001 10.25C13.9331 10.25 15.5001 8.683 15.5001 6.75C15.5001 4.817 13.9331 3.25 12.0001 3.25ZM6.50009 6.75C6.50009 3.71243 8.96252 1.25 12.0001 1.25C15.0377 1.25 17.5001 3.71243 17.5001 6.75C17.5001 9.78757 15.0377 12.25 12.0001 12.25C8.96252 12.25 6.50009 9.78757 6.50009 6.75Z" fill="#1E212C" />
