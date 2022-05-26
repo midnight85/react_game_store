@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CartItem from '../CartItem/CartItem'
+import {AppContext} from "../../App";
 
 export default function Drawer({ cartGames, onClickClose, onGameRemove }) {
     // const [cartItem, setcartItem] = useState([
@@ -26,7 +27,13 @@ export default function Drawer({ cartGames, onClickClose, onGameRemove }) {
     //     },
 
     // ])
+    const state = useContext(AppContext)
+    console.log('context',state.cartGames)
 
+    const [totalPrice,setTotalPrice] = useState(0)
+    useEffect(()=>{
+       setTotalPrice(cartGames.reduce((sum,game)=>game.price + sum,0))
+    },[cartGames])
     return (
         <div className="overlay">
             <div className="drawer">
@@ -55,7 +62,7 @@ export default function Drawer({ cartGames, onClickClose, onGameRemove }) {
                             }
                         </div>
                         <div className="drawer__footer">
-                            <div className="drawer__totalPrice"><span>Общая сумма:</span><b>23 $</b></div>
+                            <div className="drawer__totalPrice"><span>Общая сумма:</span><b>{totalPrice} ₴</b></div>
                             <button className="drawer__orderBtn">Оформить заказ</button>
                         </div>
                     </>

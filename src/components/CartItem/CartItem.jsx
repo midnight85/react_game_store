@@ -7,7 +7,7 @@ export default function CartItem({id, name, imgPath, price, onGameRemove }) {
                 <img src={imgPath} alt='game' />
             </div>
             <div className="cartItem__body">
-                <div className="cartItem__name">{id}{name}</div>
+                <div className="cartItem__name">{name}</div>
                 <div className="cartItem__price">{price} ₴</div>
             </div>
             <button className="cartItem__removeBtn"
