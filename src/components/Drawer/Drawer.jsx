@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import CartItem from '../CartItem/CartItem'
 import {AppContext} from "../../App";
 
-export default function Drawer({ cartGames, onClickClose, onGameRemove }) {
+export default function Drawer({ onClickClose, onGameRemove }) {
     // const [cartItem, setcartItem] = useState([
 
     //     {
@@ -27,13 +27,8 @@ export default function Drawer({ cartGames, onClickClose, onGameRemove }) {
     //     },
 
     // ])
-    const state = useContext(AppContext)
-    console.log('context',state.cartGames)
-
-    const [totalPrice,setTotalPrice] = useState(0)
-    useEffect(()=>{
-       setTotalPrice(cartGames.reduce((sum,game)=>game.price + sum,0))
-    },[cartGames])
+    const {cartGames} = useContext(AppContext)
+    const totalPrice=cartGames.reduce((sum,game)=>game.price + sum,0)
     return (
         <div className="overlay">
             <div className="drawer">

@@ -19,6 +19,61 @@ function App() {
 
     const [isLoading, setIsLoading] = useState(true)
     const [games, setGames] = useState([
+
+            {
+                "imgPath": "/img/games/WatchDogs_Legion.webp",
+                "name": "Watch Dogs: Legion",
+                "price": 915,
+                "id": "6xq3tfsiaK4xhxMwjGd8"
+            },
+            {
+                "imgPath": "/img/games/far_cry_6.webp",
+                "name": "Far Cry 6",
+                "price": 915,
+                "id": "DC9Hx59uqgZFD0cK5hAq"
+            },
+            {
+                "price": 899,
+                "imgPath": "/img/games/RDR2.jpg",
+                "name": "Red Dead Redemption 2",
+                "id": "SWDvE9V5BNiw0IVckqy4"
+            },
+            {
+                "price": 999,
+                "imgPath": "/img/games/days_gone.webp",
+                "name": "Days Gone",
+                "id": "WxODeHP98LlbsgWSZP0X"
+            },
+            {
+                "price": 915,
+                "name": "Assassin\"s Creed Valhalla",
+                "imgPath": "/img/games/ac_valhalla.webp",
+                "id": "e4mGAbHEbovV8VqASJdK"
+            },
+            {
+                "name": "STAR WARS Jedi: Fallen Order",
+                "imgPath": "/img/games/SWJFO.webp",
+                "price": 1199,
+                "id": "ks7rmWjWNJEBZfNDCTRH"
+            },
+            {
+                "name": "Horizon Zero Dawn™",
+                "imgPath": "/img/games/horizon.webp",
+                "price": 999,
+                "id": "pSvjbXxe52Vymd0GPO7f"
+            },
+            {
+                "name": "God of war",
+                "price": 1199,
+                "imgPath": "/img/games/god_of_war.webp",
+                "id": "pi43rZZSsokWmZczA7Hg"
+            },
+            {
+                "imgPath": "/img/games/DeathStranding.webp",
+                "name": "DEATH STRANDING",
+                "price": 1209,
+                "id": "yzyjLDmVcu1E83mJ5JRB"
+            }
         // {
         //     "name": "Far Cry 6",
         //     "imgPath": "/img/games/far_cry_6.webp",
@@ -86,16 +141,16 @@ function App() {
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true)
-            await getDocs(gamesColRef)
-                .then((snapshot) => {
-                    const games = snapshot.docs.map((doc) => {
-                        return {...doc.data(), id: doc.id}
-                    })
-                    setGames(games)
-                })
-                .catch(err => {
-                    console.log(err.message)
-                })
+            // await getDocs(gamesColRef)
+            //     .then((snapshot) => {
+            //         const games = snapshot.docs.map((doc) => {
+            //             return {...doc.data(), id: doc.id}
+            //         })
+            //         setGames(games)
+            //     })
+            //     .catch(err => {
+            //         console.log(err.message)
+            //     })
             await getDocs(cartColRef)
                 .then((snapshot) => {
                     const cartGames = snapshot.docs.map((doc) => {
@@ -121,17 +176,16 @@ function App() {
         // }
     }, [])
     const addGameToCart = async (game) => {
-        await setDoc(cartDocRef(game.id), game)
         setCartGames((prev) => ([...prev, game]))
+        await setDoc(cartDocRef(game.id), game)
     }
-    const removeGameFromCart = (game) => {
-        deleteDoc(cartDocRef(game.id), game)
+    const removeGameFromCart = async (game) => {
         setCartGames(prev => prev.filter(item => item.name !== game.name))
+        await deleteDoc(cartDocRef(game.id), game)
     }
     const gameInCartHandle = (item, cartAdded) => {
         cartAdded ? removeGameFromCart(item) : addGameToCart(item)
     }
-    const isGameInCart = (game) => (cartGames.some((item)=> item.id === game.id))
 
     const cartOpenHandler = () => {
         document.body.style.paddingRight = `${window.innerWidth - document.body.clientWidth}px`
@@ -183,10 +237,10 @@ function App() {
 
     // console.log(games)
     return (
-        <AppContext.Provider value={{games, cartGames}}>
+        <AppContext.Provider value={{games, cartGames,addGameToCart,removeGameFromCart}}>
             <div className="wrapper">
                 {cartOpened &&
-                    <Drawer cartGames={cartGames} onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}/>
+                    <Drawer  onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}/>
                 }
                 <Header onClickCart={cartOpenHandler}/>
                 <main className="page">
@@ -234,8 +288,6 @@ function App() {
                                                   imgPath={game.imgPath}
                                                   price={game.price}
                                                   onClickAdd={gameInCartHandle}
-                                                  isInCart={()=>isGameInCart(game)}
-                                                  isLoading={isLoading}
                                             />
                                         ))
                                         :

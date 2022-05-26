@@ -1,6 +1,10 @@
-import React from 'react'
+import React,{useContext, useEffect, useState} from 'react'
+import {AppContext} from "../../App";
 
 export default function Header({onClickCart}) {
+    const {cartGames} = useContext(AppContext)
+    const totalPrice=cartGames.reduce((sum,game)=>game.price + sum,0)
+
     return (
         <header className="header">
             <div className="header__container">
@@ -16,7 +20,7 @@ export default function Header({onClickCart}) {
                                 <path d="M8.5 17.5C7.94772 17.5 7.5 17.9477 7.5 18.5C7.5 19.0523 7.94772 19.5 8.5 19.5C9.05228 19.5 9.5 19.0523 9.5 18.5C9.5 17.9477 9.05228 17.5 8.5 17.5ZM5.5 18.5C5.5 16.8431 6.84315 15.5 8.5 15.5C10.1569 15.5 11.5 16.8431 11.5 18.5C11.5 20.1569 10.1569 21.5 8.5 21.5C6.84315 21.5 5.5 20.1569 5.5 18.5Z" fill="#1E212C" />
                                 <path d="M18 17.5C17.4477 17.5 17 17.9477 17 18.5C17 19.0523 17.4477 19.5 18 19.5C18.5523 19.5 19 19.0523 19 18.5C19 17.9477 18.5523 17.5 18 17.5ZM15 18.5C15 16.8431 16.3431 15.5 18 15.5C19.6569 15.5 21 16.8431 21 18.5C21 20.1569 19.6569 21.5 18 21.5C16.3431 21.5 15 20.1569 15 18.5Z" fill="#1E212C" />
                             </svg>
-                            <span className="totalPrice">1241 ₴</span>
+                            <span className="totalPrice">{totalPrice} ₴</span>
                         </button>
                         <button className="header__actions-item wishlist">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
