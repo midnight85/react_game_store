@@ -1,19 +1,37 @@
-import React, {useContext} from 'react';
-import {AppContext, HomeContext} from "../App";
+import React, {useContext, useEffect, useMemo, useState} from 'react';
+import {AppContext} from "../App";
 import Card from "../components/Card";
-import {useMemo, useState} from "react";
 
 const Home = () => {
 
-    const {games,gameInCartHandle,gameInWishlistHandle} = useContext(AppContext)
-    const {isLoading} = useContext(HomeContext)
-
+    const {isLoading, games, gameInCartHandle, gameInWishlistHandle} = useContext(AppContext)
     const [searchQuery, setSearchQuery] = useState('')
+
+    const [scrollWidth, setScrollWidth] = useState(0)
+    const isScrollExist = () => {
+        const wrapperBlock = document.querySelector('.wrapper')
+        if (!isLoading) {
+            if (wrapperBlock.clientHeight > document.body.clientHeight) {
+                setScrollWidth(window.innerWidth - document.body.clientWidth)
+            }
+        }
+        if (window.innerWidth === document.body.clientWidth) {
+            wrapperBlock.style.paddingRight = `${scrollWidth}px`
+        } else {
+            wrapperBlock.style.paddingRight = 0
+        }
+    }
+    useEffect(() => {
+        isScrollExist()
+
+    }, [isLoading, searchQuery])
+
     const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
 
     // const debouncedSearch = useDebounce((query) => {
     //     setDebouncedSearchQuery(query)
     // }, 500)
+
 
     const foundGames = useMemo(() => {
         if (searchQuery) {
@@ -50,31 +68,34 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="cards">
 
-                {isLoading ?
-                    [...Array(8)].map((value, index) => (
+            {isLoading ?
+                <div className="cards">
+                    {[...Array(8)].map((value, index) => (
                         <div key={index} className={"card cardLoading"}></div>
 
-                    ))
+                    ))}
+                </div>
+                :
+                foundGames.length ?
+                    <div className="cards">
+                        {
+                            foundGames.map((game) => (
+                                <Card key={game.id}
+                                      id={game.id}
+                                      name={game.name}
+                                      imgPath={game.imgPath}
+                                      price={game.price}
+                                      onClickAdd={gameInCartHandle}
+                                      onClickWishlist={gameInWishlistHandle}
+                                />
+                            ))}
+                    </div>
                     :
-                    foundGames.length ?
-                        foundGames.map((game) => (
-                            <Card key={game.id}
-                                  id={game.id}
-                                  name={game.name}
-                                  imgPath={game.imgPath}
-                                  price={game.price}
-                                  onClickAdd={gameInCartHandle}
-                                  onClickWishlist={gameInWishlistHandle}
-                            />
-                        ))
-                        :
-                        <div className='notFoundGame'>
-                            Игр не найдено
-                        </div>
-                }
-            </div>
+                    <div className='notFoundGame'>
+                        Игр не найдено
+                    </div>
+            }
 
         </div>
     );

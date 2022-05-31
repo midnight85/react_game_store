@@ -2,9 +2,8 @@ import React, {useContext, useEffect, useState} from 'react'
 import CartItem from './CartItem'
 import {AppContext} from "../App";
 
-export default function Drawer({ opened, onClickClose, onGameRemove }) {
+export default function Drawer({ opened, onClickClose, onGameRemove,setOrder}) {
     // const [cartItem, setcartItem] = useState([
-
     //     {
     //         name: 'God of war',
     //         imgPath: '/img/games/god_of_war.webp',
@@ -27,7 +26,18 @@ export default function Drawer({ opened, onClickClose, onGameRemove }) {
     //     },
 
     // ])
+
+    const [isOrderComplete, setIsOrderComplete]=useState(false)
     const {cartGames} = useContext(AppContext)
+
+    // const orderHandle = (cartItems) => {
+    //     const orderDate = Date.now();
+    //     const orderObj = {
+    //         date:orderDate,
+    //         items:[...cartItems]
+    //     }
+    //     console.log(orderObj)
+    // }
     const totalPrice=cartGames.reduce((sum,game)=>game.price + sum,0)
     return (
         <div className={`overlay ${opened?'overlay_open':''}`}>
@@ -58,12 +68,15 @@ export default function Drawer({ opened, onClickClose, onGameRemove }) {
                         </div>
                         <div className="drawer__footer">
                             <div className="drawer__totalPrice"><span>Общая сумма:</span><b>{totalPrice} ₴</b></div>
-                            <button className="drawer__orderBtn">Оформить заказ</button>
+                            <button className="drawer__orderBtn"
+                                    onClick={()=>{setOrder(cartGames)}}
+                            >
+                                Оформить заказ</button>
                         </div>
                     </>
                     :
                     <div className='drawer__empty'>
-                        <span>Корзина пустая!</span>
+                        <span>{isOrderComplete?"Заказ оформлен":"Корзина пустая!"}</span>
                     </div>
                 }
             </div>

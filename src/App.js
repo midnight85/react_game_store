@@ -1,26 +1,29 @@
-import React, {createContext, useEffect, useMemo, useState} from 'react'
+import React, {createContext, useEffect, useState} from 'react'
 // import Card from "./components/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
 import Home from "./pages/Home"
 import Wishlist from "./pages/Wishlist";
-import useDebounce from './hooks/useDebounce';
 import {initializeApp} from "firebase/app";
-import {collection, deleteDoc, doc, getDocs, getFirestore, setDoc} from 'firebase/firestore'
+import {collection, deleteDoc, doc,addDoc, getDocs, getFirestore, onSnapshot, setDoc} from 'firebase/firestore'
 import {firebaseConfig} from './firebaseConfig';
 import {Route, Routes} from "react-router-dom";
 import * as PropTypes from "prop-types";
+import Profile from "./pages/Profile";
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
 const gamesColRef = collection(db, 'games');
 const cartColRef = collection(db, 'cart');
 const wishlistColRef = collection(db, 'wishlist');
+const ordersColRef = collection(db, 'orders');
+
 const cartDocRef = (id) => (doc(db, 'cart', id));
 const wishlistDocRef = (id) => (doc(db, 'wishlist', id));
+const ordersDocRef = (id) => (doc(db, 'orders', id));
 
 export const AppContext = createContext({})
-export const HomeContext = createContext({})
 
 
 Routes.propTypes = {children: PropTypes.node};
@@ -30,60 +33,60 @@ function App() {
     const [isLoading, setIsLoading] = useState(true)
     const [games, setGames] = useState([
 
-            // {
-            //     "imgPath": "/img/games/WatchDogs_Legion.webp",
-            //     "name": "Watch Dogs: Legion",
-            //     "price": 915,
-            //     "id": "6xq3tfsiaK4xhxMwjGd8"
-            // },
-            // {
-            //     "imgPath": "/img/games/far_cry_6.webp",
-            //     "name": "Far Cry 6",
-            //     "price": 915,
-            //     "id": "DC9Hx59uqgZFD0cK5hAq"
-            // },
-            // {
-            //     "price": 899,
-            //     "imgPath": "/img/games/RDR2.jpg",
-            //     "name": "Red Dead Redemption 2",
-            //     "id": "SWDvE9V5BNiw0IVckqy4"
-            // },
-            // {
-            //     "price": 999,
-            //     "imgPath": "/img/games/days_gone.webp",
-            //     "name": "Days Gone",
-            //     "id": "WxODeHP98LlbsgWSZP0X"
-            // },
-            // {
-            //     "price": 915,
-            //     "name": "Assassin\"s Creed Valhalla",
-            //     "imgPath": "/img/games/ac_valhalla.webp",
-            //     "id": "e4mGAbHEbovV8VqASJdK"
-            // },
-            // {
-            //     "name": "STAR WARS Jedi: Fallen Order",
-            //     "imgPath": "/img/games/SWJFO.webp",
-            //     "price": 1199,
-            //     "id": "ks7rmWjWNJEBZfNDCTRH"
-            // },
-            // {
-            //     "name": "Horizon Zero Dawn™",
-            //     "imgPath": "/img/games/horizon.webp",
-            //     "price": 999,
-            //     "id": "pSvjbXxe52Vymd0GPO7f"
-            // },
-            // {
-            //     "name": "God of war",
-            //     "price": 1199,
-            //     "imgPath": "/img/games/god_of_war.webp",
-            //     "id": "pi43rZZSsokWmZczA7Hg"
-            // },
-            // {
-            //     "imgPath": "/img/games/DeathStranding.webp",
-            //     "name": "DEATH STRANDING",
-            //     "price": 1209,
-            //     "id": "yzyjLDmVcu1E83mJ5JRB"
-            // }
+        // {
+        //     "imgPath": "/img/games/WatchDogs_Legion.webp",
+        //     "name": "Watch Dogs: Legion",
+        //     "price": 915,
+        //     "id": "6xq3tfsiaK4xhxMwjGd8"
+        // },
+        // {
+        //     "imgPath": "/img/games/far_cry_6.webp",
+        //     "name": "Far Cry 6",
+        //     "price": 915,
+        //     "id": "DC9Hx59uqgZFD0cK5hAq"
+        // },
+        // {
+        //     "price": 899,
+        //     "imgPath": "/img/games/RDR2.jpg",
+        //     "name": "Red Dead Redemption 2",
+        //     "id": "SWDvE9V5BNiw0IVckqy4"
+        // },
+        // {
+        //     "price": 999,
+        //     "imgPath": "/img/games/days_gone.webp",
+        //     "name": "Days Gone",
+        //     "id": "WxODeHP98LlbsgWSZP0X"
+        // },
+        // {
+        //     "price": 915,
+        //     "name": "Assassin\"s Creed Valhalla",
+        //     "imgPath": "/img/games/ac_valhalla.webp",
+        //     "id": "e4mGAbHEbovV8VqASJdK"
+        // },
+        // {
+        //     "name": "STAR WARS Jedi: Fallen Order",
+        //     "imgPath": "/img/games/SWJFO.webp",
+        //     "price": 1199,
+        //     "id": "ks7rmWjWNJEBZfNDCTRH"
+        // },
+        // {
+        //     "name": "Horizon Zero Dawn™",
+        //     "imgPath": "/img/games/horizon.webp",
+        //     "price": 999,
+        //     "id": "pSvjbXxe52Vymd0GPO7f"
+        // },
+        // {
+        //     "name": "God of war",
+        //     "price": 1199,
+        //     "imgPath": "/img/games/god_of_war.webp",
+        //     "id": "pi43rZZSsokWmZczA7Hg"
+        // },
+        // {
+        //     "imgPath": "/img/games/DeathStranding.webp",
+        //     "name": "DEATH STRANDING",
+        //     "price": 1209,
+        //     "id": "yzyjLDmVcu1E83mJ5JRB"
+        // }
         // {
         //     "name": "Far Cry 6",
         //     "imgPath": "/img/games/far_cry_6.webp",
@@ -132,9 +135,9 @@ function App() {
     ])
     const [cartGames, setCartGames] = useState([])
     const [wishlist, setWishlist] = useState([])
+    const [ordersList, setOrderList] = useState([]);
 
     const [cartOpened, setCartOpened] = useState(false)
-
 
 
     useEffect(() => {
@@ -150,30 +153,51 @@ function App() {
                 .catch(err => {
                     console.log(err.message)
                 })
-            await getDocs(cartColRef)
-                .then((snapshot) => {
-                    const cartGames = snapshot.docs.map((doc) => {
-                        return {...doc.data()}
-                    })
-                    setCartGames(cartGames)
+            onSnapshot(cartColRef, (snapshot) => {
+                const cartGames = snapshot.docs.map((doc) => {
+                    return {...doc.data()}
                 })
-                .catch(err => {
-                    console.log(err.message)
+                setCartGames(cartGames)
+            })
+            onSnapshot(wishlistColRef, (snapshot) => {
+                const wishlistGames = snapshot.docs.map((doc) => {
+                    return {...doc.data()}
                 })
-            await getDocs(wishlistColRef)
-                .then((snapshot) => {
-                    const wishlistGames = snapshot.docs.map((doc) => {
-                        return {...doc.data()}
-                    })
-                    setWishlist(wishlistGames)
+                setWishlist(wishlistGames)
+            })
+            onSnapshot(ordersColRef, (snapshot) => {
+                const orders = snapshot.docs.map((doc) => {
+                    return {...doc.data()}
                 })
-                .catch(err => {
-                    console.log(err.message)
-                })
+                console.log("orders list",orders)
+                setOrderList(orders)
+            })
+            // await getDocs(cartColRef)
+            //     .then((snapshot) => {
+            //         const cartGames = snapshot.docs.map((doc) => {
+            //             return {...doc.data()}
+            //         })
+            //         setCartGames(cartGames)
+            //     })
+            //     .catch(err => {
+            //         console.log(err.message)
+            //     })
+            // await getDocs(wishlistColRef)
+            //     .then((snapshot) => {
+            //         const wishlistGames = snapshot.docs.map((doc) => {
+            //             return {...doc.data()}
+            //         })
+            //         setWishlist(wishlistGames)
+            //     })
+            //     .catch(err => {
+            //         console.log(err.message)
+            //     })
             setIsLoading(false)
+
         }
 
         fetchData()
+
         // ()=>{
         //     games.map((game) => {
         //         addDoc(collection(getFirestore(), 'games'), game)
@@ -185,11 +209,11 @@ function App() {
         // }
     }, [])
     const addGameToCart = async (game) => {
-        setCartGames((prev) => ([...prev, game]))
+        // setCartGames((prev) => ([...prev, game]))
         await setDoc(cartDocRef(game.id), game)
     }
     const removeGameFromCart = async (game) => {
-        setCartGames(prev => prev.filter(item => item.name !== game.name))
+        // setCartGames(prev => prev.filter(item => item.name !== game.name))
         await deleteDoc(cartDocRef(game.id), game)
     }
     const gameInCartHandle = (item, cartAdded) => {
@@ -197,15 +221,26 @@ function App() {
     }
 
     const addGameToWishlist = async (game) => {
-        setWishlist((prev) => ([...prev, game]))
+        // setWishlist((prev) => ([...prev, game]))
         await setDoc(wishlistDocRef(game.id), game)
     }
     const removeGameFromWishlist = async (game) => {
-        setWishlist(prev => prev.filter(item => item.name !== game.name))
+        // setWishlist(prev => prev.filter(item => item.name !== game.name))
         await deleteDoc(wishlistDocRef(game.id), game)
     }
     const gameInWishlistHandle = (item, wishlistAdded) => {
         wishlistAdded ? removeGameFromWishlist(item) : addGameToWishlist(item)
+    }
+
+    const setOrder = async (cartItems) => {
+        console.log(...cartItems)
+        // setCartGames((prev) => ([...prev, game]))
+        const orderDate = Date.now();
+        const orderObj = {
+            date:orderDate,
+            items:[...cartItems]
+        }
+        await addDoc(collection(db, 'orders'), orderObj)
     }
 
     const cartOpenHandler = () => {
@@ -220,30 +255,37 @@ function App() {
                 cartOpenHandler()
             }
         };
+        const overlayHandle = event => {
+            if (event.target.classList.contains("overlay_open")) {
+                cartOpenHandler()
+            }
+        };
         document.addEventListener("keyup", keyDownHandler);
+        document.addEventListener("click", overlayHandle);
         return () => {
             document.removeEventListener("keyup", keyDownHandler);
+            document.removeEventListener("click", overlayHandle);
         };
-    }, [cartOpened]);
+    }, [cartOpened, cartOpenHandler]);
     return (
-        <AppContext.Provider value={{games, cartGames, wishlist,gameInCartHandle,gameInWishlistHandle}}>
+        <AppContext.Provider
+            value={{isLoading, games, cartGames, wishlist, ordersList, gameInCartHandle, gameInWishlistHandle}}>
             <div className="wrapper">
                 {/*{cartOpened &&*/}
                 {/*    <Drawer  onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}/>*/}
                 {/*}*/}
-                <Drawer opened={cartOpened} onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}/>
+                <Drawer opened={cartOpened} onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart} setOrder={setOrder}/>
 
                 <Header onClickCart={cartOpenHandler}/>
                 <main className="page">
                     <div className="page__container">
 
                         <Routes>
-                            <Route path="/" element = {
-                                <HomeContext.Provider value={{isLoading}}>
-                                <Home />
-                                </HomeContext.Provider>
-                            } />
-                            <Route path="/wishlist" element={<Wishlist />} />
+                            <Route path="/" element={
+                                <Home/>
+                            }/>
+                            <Route path="/wishlist" element={<Wishlist/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
                         </Routes>
                     </div>
                 </main>
