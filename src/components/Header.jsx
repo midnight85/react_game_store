@@ -10,7 +10,7 @@ export default function Header({onClickCart, cartOpened}) {
         <header className="header">
             <div className="header__container">
                 <div className="header__body">
-                    <Link to="/" className="header__logo">
+                    <Link to={process.env.PUBLIC_URL+"/"} className="header__logo">
                         <img width="50" height="50" className="logo" src="/img/logo.png" alt="logo"/>
                         <span><span className="blue">R</span>eact <span className="blue">G</span>ame <span
                             className="blue">S</span>tore</span>
@@ -20,9 +20,9 @@ export default function Header({onClickCart, cartOpened}) {
                                 onClick={onClickCart}>
                             <span className="totalPrice ">{totalPrice} ₴</span>
                         </button>
-                        <NavLink to='/wishlist' className={({isActive}) => `header__actions-item wishlist  ${isActive ? "active-page icon-heart-filled" : "icon-heart"}`} >
+                        <NavLink to={process.env.PUBLIC_URL+'/wishlist'} className={({isActive}) => `header__actions-item wishlist  ${isActive ? "active-page icon-heart-filled" : "icon-heart"}`} >
                         </NavLink>
-                        <NavLink to='/profile' className={({isActive}) => `header__actions-item profile ${isActive ? "active-page icon-profile-filled" : "icon-profile-outline"}`} >
+                        <NavLink to={process.env.PUBLIC_URL+'/profile'} className={({isActive}) => `header__actions-item profile ${isActive ? "active-page icon-profile-filled" : "icon-profile-outline"}`} >
                         </NavLink>
                     </div>
                 </div>
