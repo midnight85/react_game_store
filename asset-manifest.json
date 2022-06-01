@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react_game_store/static/css/main.5ff4a4f0.css",
-    "main.js": "/react_game_store/static/js/main.272746d6.js",
+    "main.js": "/react_game_store/static/js/main.f4c62991.js",
     "static/media/Inter-Bold.woff": "/react_game_store/static/media/Inter-Bold.23eedfa7d7d7b2baf345.woff",
     "static/media/Inter-SemiBold.woff": "/react_game_store/static/media/Inter-SemiBold.4597ef96de6a83f8b322.woff",
     "static/media/Inter-Medium.woff": "/react_game_store/static/media/Inter-Medium.b7f075aa2f43ca8f4b4a.woff",
@@ -18,10 +18,10 @@
     "static/media/mark.svg": "/react_game_store/static/media/mark.dff97b2b6a05f51add8db601901cae51.svg",
     "static/media/plus.svg": "/react_game_store/static/media/plus.19f152cf70ce6ba685adbec2d0ce3bfb.svg",
     "main.5ff4a4f0.css.map": "/react_game_store/static/css/main.5ff4a4f0.css.map",
-    "main.272746d6.js.map": "/react_game_store/static/js/main.272746d6.js.map"
+    "main.f4c62991.js.map": "/react_game_store/static/js/main.f4c62991.js.map"
   },
   "entrypoints": [
     "static/css/main.5ff4a4f0.css",
-    "static/js/main.272746d6.js"
+    "static/js/main.f4c62991.js"
   ]
 }
