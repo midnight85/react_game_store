@@ -40,7 +40,7 @@ export default function Card({id, name, imgPath, price, onClickAdd, onClickWishl
                 }
 
                 <div className="card__img">
-                    <img src={imgPath} alt="game"/>
+                    <img src={process.env.PUBLIC_URL + imgPath} alt="game-img"/>
                 </div>
             </div>
             <div className="card__body">

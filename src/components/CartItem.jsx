@@ -4,7 +4,7 @@ export default function CartItem({id, name, imgPath, price, onGameRemove }) {
     return (
         <article className="cartItem">
             <div className="cartItem__img">
-                <img src={imgPath} alt='game' />
+                <img src={process.env.PUBLIC_URL + imgPath} alt='game-img' />
             </div>
             <div className="cartItem__body">
                 <div className="cartItem__name">{name}</div>

@@ -42,7 +42,7 @@ const Profile = () => {
                                             <Card key={index}
                                                   id={item.id}
                                                   name={item.name}
-                                                  imgPath={process.env.PUBLIC_URL + item.imgPath}
+                                                  imgPath={item.imgPath}
                                                   price={item.price}
                                             />
                                         ))}

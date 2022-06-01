@@ -23,7 +23,7 @@ const Wishlist = () => {
                                 <Card key={game.id}
                                       id={game.id}
                                       name={game.name}
-                                      imgPath={process.env.PUBLIC_URL+game.imgPath}
+                                      imgPath={game.imgPath}
                                       price={game.price}
                                       onClickAdd={gameInCartHandle}
                                       onClickWishlist={gameInWishlistHandle}
