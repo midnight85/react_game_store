@@ -1,5 +1,7 @@
 @use "sass:math";
 
+
+
 .overlay {
   position: fixed;
   z-index: 5;
@@ -11,6 +13,7 @@
   visibility: hidden;
   opacity: 0;
   transition: all 0.3s ease 0s;
+
 
   &_open {
     visibility: visible;
@@ -217,10 +220,7 @@
     line-height: math.div(39, 32);
     color: #000000;
   }
-  &__orderDate{
-    font-size: 22px;
-    margin: 40px 0 20px 0;
-  }
+
   &__actions {
     display: flex;
     justify-content: flex-end;
@@ -254,6 +254,29 @@
     }
   }
 }
+.order-item{
+  padding: 10px 0;
+}
+.order-info{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 40px 0 20px 0;
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #cbcbcb;
+  }
+}
+.order-info-item{
+  font-size: 20px;
+}
+
 .notFoundGame {
   font-size: 24px;
 }
@@ -403,28 +426,6 @@
   }
 }
 
-.wishlist__backBtn {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  path {
-    transition: all 0.3s ease 0s;
-    fill: $darkBlue;
-  }
-
-  @media (any-hover: hover) {
-    &:hover {
-      svg {
-        path {
-          fill: $blue;
-        }
-      }
-    }
-  }
-}
 
 .cardLoading {
   padding-top: percent(400, 247);

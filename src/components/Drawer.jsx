@@ -30,14 +30,10 @@ export default function Drawer({ opened, onClickClose, onGameRemove,setOrder}) {
     const [isOrderComplete, setIsOrderComplete]=useState(false)
     const {cartGames} = useContext(AppContext)
 
-    // const orderHandle = (cartItems) => {
-    //     const orderDate = Date.now();
-    //     const orderObj = {
-    //         date:orderDate,
-    //         items:[...cartItems]
-    //     }
-    //     console.log(orderObj)
-    // }
+    const handleOrder = () => {
+        setIsOrderComplete(true)
+        setOrder(cartGames)
+    }
     const totalPrice=cartGames.reduce((sum,game)=>game.price + sum,0)
     return (
         <div className={`overlay ${opened?'overlay_open':''}`}>
@@ -69,14 +65,14 @@ export default function Drawer({ opened, onClickClose, onGameRemove,setOrder}) {
                         <div className="drawer__footer">
                             <div className="drawer__totalPrice"><span>Общая сумма:</span><b>{totalPrice} ₴</b></div>
                             <button className="drawer__orderBtn"
-                                    onClick={()=>{setOrder(cartGames)}}
+                                    onClick={handleOrder}
                             >
                                 Оформить заказ</button>
                         </div>
                     </>
                     :
                     <div className='drawer__empty'>
-                        <span>{isOrderComplete?"Заказ оформлен":"Корзина пустая!"}</span>
+                        <span>{isOrderComplete?"Заказ оформлен!":"Корзина пустая!"}</span>
                     </div>
                 }
             </div>

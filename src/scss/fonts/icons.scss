@@ -8,9 +8,39 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-[class*="_icon-"] {
+[class*="icon-"] {
 	&:before {
 		@extend %ic;
 		display: block;
 	}
+}
+.icon-cart-filled:before {
+  content: "\e900";
+}
+.icon-cart:before {
+  content: "\e901";
+}
+.icon-heart-filled:before {
+  content: "\e902";
+}
+.icon-heart:before {
+  content: "\e903";
+}
+.icon-profile-filled:before {
+  content: "\e904";
+}
+.icon-profile-outline:before {
+  content: "\e905";
+}
+.icon-mark:before {
+  content: "\e906";
+}
+.icon-cross:before {
+  content: "\e907";
+}
+.icon-plus:before {
+  content: "\e908";
+}
+.icon-search:before {
+  content: "\e909";
 }

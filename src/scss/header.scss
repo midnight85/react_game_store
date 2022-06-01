@@ -47,6 +47,11 @@
         line-height: 17px;
         color: #5c5c5c;
         transition: all 0.3s ease 0s;
+        &:before{
+            font-size: 24px;
+            color: #5c5c5c;
+            transition: all 0.3s ease 0s;
+        }
         svg {
             path {
                 transition: all 0.3s ease 0s;
@@ -58,6 +63,9 @@
         }
         @media (any-hover: hover) {
             &:hover {
+                &:before{
+                    color: $blue;
+                }
                 svg {
                     path {
                         fill: $blue;
@@ -70,6 +78,7 @@
         }
     }
 }
+
 //====================================================================================================
 
 //Burger

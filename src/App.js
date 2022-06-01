@@ -5,7 +5,17 @@ import Header from "./components/Header";
 import Home from "./pages/Home"
 import Wishlist from "./pages/Wishlist";
 import {initializeApp} from "firebase/app";
-import {collection, deleteDoc, doc,addDoc, getDocs, getFirestore, onSnapshot, setDoc} from 'firebase/firestore'
+import {
+    collection,
+    deleteDoc,
+    doc,
+    addDoc,
+    getDocs,
+    getFirestore,
+    onSnapshot,
+    setDoc,
+    orderBy
+} from 'firebase/firestore'
 import {firebaseConfig} from './firebaseConfig';
 import {Route, Routes} from "react-router-dom";
 import * as PropTypes from "prop-types";
@@ -165,33 +175,14 @@ function App() {
                 })
                 setWishlist(wishlistGames)
             })
-            onSnapshot(ordersColRef, (snapshot) => {
+            onSnapshot(ordersColRef, orderBy("date"), (snapshot) => {
                 const orders = snapshot.docs.map((doc) => {
                     return {...doc.data()}
                 })
-                console.log("orders list",orders)
+                orders.sort((a, b) => a.date.toString().localeCompare(b.date.toString()))
+                    .reverse()
                 setOrderList(orders)
             })
-            // await getDocs(cartColRef)
-            //     .then((snapshot) => {
-            //         const cartGames = snapshot.docs.map((doc) => {
-            //             return {...doc.data()}
-            //         })
-            //         setCartGames(cartGames)
-            //     })
-            //     .catch(err => {
-            //         console.log(err.message)
-            //     })
-            // await getDocs(wishlistColRef)
-            //     .then((snapshot) => {
-            //         const wishlistGames = snapshot.docs.map((doc) => {
-            //             return {...doc.data()}
-            //         })
-            //         setWishlist(wishlistGames)
-            //     })
-            //     .catch(err => {
-            //         console.log(err.message)
-            //     })
             setIsLoading(false)
 
         }
@@ -209,11 +200,9 @@ function App() {
         // }
     }, [])
     const addGameToCart = async (game) => {
-        // setCartGames((prev) => ([...prev, game]))
         await setDoc(cartDocRef(game.id), game)
     }
     const removeGameFromCart = async (game) => {
-        // setCartGames(prev => prev.filter(item => item.name !== game.name))
         await deleteDoc(cartDocRef(game.id), game)
     }
     const gameInCartHandle = (item, cartAdded) => {
@@ -221,11 +210,9 @@ function App() {
     }
 
     const addGameToWishlist = async (game) => {
-        // setWishlist((prev) => ([...prev, game]))
         await setDoc(wishlistDocRef(game.id), game)
     }
     const removeGameFromWishlist = async (game) => {
-        // setWishlist(prev => prev.filter(item => item.name !== game.name))
         await deleteDoc(wishlistDocRef(game.id), game)
     }
     const gameInWishlistHandle = (item, wishlistAdded) => {
@@ -233,14 +220,17 @@ function App() {
     }
 
     const setOrder = async (cartItems) => {
-        console.log(...cartItems)
-        // setCartGames((prev) => ([...prev, game]))
+        console.log("start")
         const orderDate = Date.now();
         const orderObj = {
-            date:orderDate,
-            items:[...cartItems]
+            date: orderDate,
+            items: [...cartItems]
         }
         await addDoc(collection(db, 'orders'), orderObj)
+        for (let i = 0; i < cartItems.length; i++) {
+            removeGameFromCart(cartItems[i])
+        }
+        console.log("done")
     }
 
     const cartOpenHandler = () => {
@@ -274,9 +264,10 @@ function App() {
                 {/*{cartOpened &&*/}
                 {/*    <Drawer  onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}/>*/}
                 {/*}*/}
-                <Drawer opened={cartOpened} onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart} setOrder={setOrder}/>
+                <Drawer opened={cartOpened} onClickClose={cartOpenHandler} onGameRemove={removeGameFromCart}
+                        setOrder={setOrder}/>
 
-                <Header onClickCart={cartOpenHandler}/>
+                <Header onClickCart={cartOpenHandler} cartOpened={cartOpened}/>
                 <main className="page">
                     <div className="page__container">
 
