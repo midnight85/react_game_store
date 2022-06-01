@@ -56,7 +56,7 @@ export default function Drawer({ opened, onClickClose, onGameRemove,setOrder}) {
                                     <CartItem key={game.name}
                                         id={game.id}
                                         name={game.name}
-                                        imgPath={game.imgPath}
+                                        imgPath={process.env.PUBLIC_URL + game.imgPath}
                                         price={game.price}
                                         onGameRemove={onGameRemove}
                                     />))

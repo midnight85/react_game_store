@@ -272,11 +272,11 @@ function App() {
                     <div className="page__container">
 
                         <Routes>
-                            <Route path="/" element={
+                            <Route path={process.env.PUBLIC_URL+"/"} element={
                                 <Home/>
                             }/>
-                            <Route path="/wishlist" element={<Wishlist/>}/>
-                            <Route path="/profile" element={<Profile/>}/>
+                            <Route path={process.env.PUBLIC_URL+"/wishlist"} element={<Wishlist/>}/>
+                            <Route path={process.env.PUBLIC_URL+"/profile"} element={<Profile/>}/>
                         </Routes>
                     </div>
                 </main>

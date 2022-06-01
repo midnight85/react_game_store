@@ -11,7 +11,7 @@ export default function Header({onClickCart, cartOpened}) {
             <div className="header__container">
                 <div className="header__body">
                     <Link to={process.env.PUBLIC_URL+"/"} className="header__logo">
-                        <img width="50" height="50" className="logo" src="/img/logo.png" alt="logo"/>
+                        <img width="50" height="50" className="logo" src={process.env.PUBLIC_URL+"/img/logo.png"} alt="logo"/>
                         <span><span className="blue">R</span>eact <span className="blue">G</span>ame <span
                             className="blue">S</span>tore</span>
                     </Link>
